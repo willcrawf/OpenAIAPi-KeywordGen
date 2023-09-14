@@ -23,20 +23,17 @@ app.use(express.static(__dirname));
 // T-shirt keyword generator function
 async function generateKeywords(input) {
   try {
-    const prompt = `Generate T-shirt keywords related to: ${input}. Provide generic keywords - make the keywords individual words only. Seperate each keyword by a comma, do not use numbers`;
-
+    const prompt = `Generate T-shirt keywords related to: ${input}. Include synonyms and variations for ${input}. Make the keywords individual words only. Separate each keyword by a comma, do not use numbers. These are search keywords, so pretend that you are a user looking for a t-shirt design when generating the keywords. Uncommon words like 'Rendezvous' should not be used in the response.`;
     const params = {
       messages: [{ role: 'user', content: prompt }],
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4',
     };
 
     const completion = await openai.chat.completions.create(params);
     let responseText = completion.choices[0].message.content;
-
+    
     // Remove unwanted characters and numbers
-    responseText = responseText.replace(/\d+\.\s+/g, ''); // Remove numbers and periods
-    responseText = responseText.replace(/-/g, ','); // Replace hyphens with commas
-    responseText = responseText.replace(/\s+/g, ''); // Remove spaces
+    responseText = responseText.replace(/[^a-zA-Z\s,]/g, '');
 
     // Split the response into individual keywords
     const keywords = responseText.split(',').map(keyword => keyword.trim());
@@ -48,6 +45,7 @@ async function generateKeywords(input) {
     return '';
   }
 }
+
 
 
 
