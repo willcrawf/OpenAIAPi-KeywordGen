@@ -11,5 +11,8 @@
   "license": "ISC",
   "engines": {
     "node": "18.17.1"
+  },
+  "dependencies": {
+    "openai": "^4.6.0"
   }
 }
