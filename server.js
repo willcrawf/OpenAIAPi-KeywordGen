@@ -8,7 +8,7 @@ const app = express();
 const port = process.env.PORT || 8000; // Use the dynamic port provided by Heroku, or 8000 as a fallback
 
 // Set up your OpenAI API key
-const openaiApiKey = process.env.OPENAI_API_KEY; // Replace with your actual OpenAI API key
+const openaiApiKey = process.env.OPENAI_API_KEY;
 
 const openai = new OpenAI({
   apiKey: openaiApiKey,
