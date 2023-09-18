@@ -23,7 +23,11 @@ app.use(express.static(__dirname));
 // T-shirt keyword generator function
 async function generateKeywords(input) {
   try {
-    const prompt = `Generate T-shirt keywords related to: ${input}. Include synonyms and variations for ${input}. Make sure the keywords related to "${input}" are listed first, and separate each keyword by a comma with no spaces. These are search keywords, so pretend that you are a user looking for a T-shirt design when generating the keywords - do the keyword only (do not specifically write t-shirt, hat, shirt, etc. unless it is used in ${input}). Uncommon words like 'Rendezvous' should not be used in the response.`;
+    // Trim the input to remove leading/trailing spaces or hidden characters
+    input = input.trim();
+
+    const prompt = `Generate T-shirt keywords related to: ${input}. Include synonyms and variations for ${input}. Make sure the keywords related to "${input}" are listed first, and separate each keyword by a comma with no spaces. These are search keywords, so pretend that you are a user looking for a T-shirt design when generating the keywords - do the keyword only (do not specifically write t-shirt, hat, shirt, etc. unless it is used in ${input}). If the ${input} includes a number, start the list with that number. Uncommon words like 'Rendezvous' should not be used in the response.`;
+
     const params = {
       messages: [{ role: 'user', content: prompt }],
       model: 'gpt-4',
@@ -32,19 +36,36 @@ async function generateKeywords(input) {
     const completion = await openai.chat.completions.create(params);
     let responseText = completion.choices[0].message.content;
 
-    // Remove unwanted characters and numbers
+    // Remove unwanted characters
     responseText = responseText.replace(/[^a-zA-Z\s,]/g, '');
 
     // Split the response into individual keywords
     const keywords = responseText.split(',').map(keyword => keyword.trim());
 
+    // If the input contains a number, insert it at the beginning
+    if (/^\d+$/.test(input)) {
+      keywords.unshift(input);
+    } else {
+      // If there's no number in the input, return it as the first keyword
+      keywords.unshift(input);
+    }
+
+    // Remove any empty strings from the keywords list
+    const filteredKeywords = keywords.filter(keyword => keyword !== '');
+
     // Join keywords with commas on a single line
-    return keywords.join(',');
+    return filteredKeywords.join(',');
   } catch (error) {
     console.error('Error:', error);
     return '';
   }
 }
+
+
+
+
+
+
 
 // Endpoint for generating T-shirt keywords
 app.get('/generateKeywords', async (req, res) => {

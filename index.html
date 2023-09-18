@@ -9,68 +9,87 @@
         <h1>T-Shirt Keyword Generator</h1>
     </header>
 
-    <div class = "image_container" width="100%">
+    <div class="image_container" width="100%">
         <img src="2022Logo.png" width="20%" height="20%">
     </div>
-    
+
     <div class="container">
         <input type="text" id="keyword-input" placeholder="Enter keywords (comma-separated)" />
         <button id="generate-button">Generate Keywords</button>
+        <button id="cancel-button" style="display: none;">Cancel</button>
         <div id="output">
             <h2>Generated Keywords:</h2>
             <ul id="keyword-list"></ul>
         </div>
 
-         <!-- Add a loading message element -->
+        <!-- Add a loading message element -->
         <p id="loading-message">Loading...</p>
         <div id="loading-icon"></div>
-
     </div>
-    </div>
-
+    
     <script>
         document.getElementById('generate-button').addEventListener('click', () => {
-          // Hide the input and button during loading
-          document.getElementById('keyword-input').disabled = true;
-          document.getElementById('generate-button').disabled = true;
-          
-          // Show the loading message and icon
-          document.getElementById('loading-message').style.display = 'block';
-          document.getElementById('loading-icon').style.display = 'block';
-          
-          const inputKeywords = document.getElementById('keyword-input').value.split(',').map(keyword => keyword.trim());
-      
-          // Send a request to your Express server to generate keywords
-          fetch(`/generateKeywords?keywords=${inputKeywords.join(',')}`, {
-            method: 'GET',
-          })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.text(); // Parse the response as plain text
-          })
-          .then(data => {
-            // Display the keywords as a single comma-separated string
-            const keywordList = document.getElementById('keyword-list');
-            keywordList.textContent = data.trim(); // Set the text content directly
-            
-            // Hide the loading message and icon, and re-enable input and button
-            document.getElementById('loading-message').style.display = 'none';
-            document.getElementById('loading-icon').style.display = 'none';
-            document.getElementById('keyword-input').disabled = false;
-            document.getElementById('generate-button').disabled = false;
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            // Hide the loading message and icon, and re-enable input and button in case of an error
-            document.getElementById('loading-message').style.display = 'none';
-            document.getElementById('loading-icon').style.display = 'none';
-            document.getElementById('keyword-input').disabled = false;
-            document.getElementById('generate-button').disabled = false;
-          });
+            // Hide the input and generate button during loading
+            document.getElementById('keyword-input').disabled = true;
+            document.getElementById('generate-button').disabled = true;
+
+            // Show the loading message and icon
+            document.getElementById('loading-message').style.display = 'block';
+            document.getElementById('loading-icon').style.display = 'block';
+
+            // Show the cancel button and hide the generate button
+            document.getElementById('cancel-button').style.display = 'inline-block';
+            document.getElementById('generate-button').style.display = 'none';
+
+            const inputKeywords = document.getElementById('keyword-input').value.split(',').map(keyword => keyword.trim());
+
+            // Send a request to your Express server to generate keywords
+            fetch(`/generateKeywords?keywords=${inputKeywords.join(',')}`, {
+                method: 'GET',
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text(); // Parse the response as plain text
+                })
+                .then(data => {
+                    // Display the keywords as a single comma-separated string
+                    const keywordList = document.getElementById('keyword-list');
+                    keywordList.textContent = data.trim(); // Set the text content directly
+
+                    // Hide the loading message and icon, and re-enable input and buttons
+                    document.getElementById('loading-message').style.display = 'none';
+                    document.getElementById('loading-icon').style.display = 'none';
+                    document.getElementById('keyword-input').disabled = false;
+                    document.getElementById('cancel-button').style.display = 'none'; // Hide the cancel button
+                    document.getElementById('generate-button').style.display = 'inline-block'; // Show the generate button
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Hide the loading message and icon, and re-enable input and buttons in case of an error
+                    document.getElementById('loading-message').style.display = 'none';
+                    document.getElementById('loading-icon').style.display = 'none';
+                    document.getElementById('keyword-input').disabled = false;
+                    document.getElementById('cancel-button').style.display = 'none'; // Hide the cancel button
+                    document.getElementById('generate-button').style.display = 'inline-block'; // Show the generate button
+                });
         });
-      </script>
-      
+
+        // Add an event listener to the cancel button to stop the fetch request
+        document.getElementById('cancel-button').addEventListener('click', () => {
+            // Hide the cancel button and show the generate button
+            document.getElementById('cancel-button').style.display = 'none';
+            document.getElementById('generate-button').style.display = 'inline-block';
+
+            // Hide the loading message and icon
+            document.getElementById('loading-message').style.display = 'none';
+            document.getElementById('loading-icon').style.display = 'none';
+
+            // Re-enable the input field and generate button
+            document.getElementById('keyword-input').disabled = false;
+            document.getElementById('generate-button').disabled = false;
+        });
+    </script>
 </body>
 </html>
