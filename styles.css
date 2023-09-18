@@ -1,12 +1,13 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    font-family: 'Roboto', sans-serif;
+    background-color: #ecf0f1; /* Light gray background */
     margin: 0;
     padding: 0;
+    color: #333;
 }
 
 header {
-    background-color: #333;
+    background-color: #2c3e50; /* Dark blue header */
     color: #fff;
     text-align: center;
     padding: 20px 0;
@@ -19,55 +20,74 @@ h1 {
 
 .image_container {
     display: flex;
-    margin-top: 10px;
     justify-content: center;
+    margin-top: 20px;
 }
 
 .container {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: #fff; /* White container background */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
 }
 
 #keyword-input {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 12px;
     font-size: 18px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+#clear-button,
+#generate-button,
+#cancel-button,
+#copy-button {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+    color: #fff; /* White text color */
+}
+
+#clear-button {
+    background-color: #e74c3c; /* Red clear button */
+}
+
+#clear-button:hover {
+    background-color: #c0392b; /* Darker red on hover */
 }
 
 #generate-button {
-    background-color: #333;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* Smooth button hover effect */
+    background-color: #3498db; /* Blue generate button */
 }
 
 #generate-button:hover {
-    background-color: #555;
+    background-color: #2980b9; /* Darker blue on hover */
 }
 
 #cancel-button {
-    background-color: #555;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    cursor: pointer;
-    display: none; /* Initially, hide the cancel button */
-    transition: background-color 0.3s ease; /* Smooth button hover effect */
+    background-color: #e67e22; /* Orange cancel button */
 }
 
 #cancel-button:hover {
-    background-color: #777;
+    background-color: #d35400; /* Darker orange on hover */
+}
+
+#copy-button {
+    background-color: #2ecc71; /* Green copy button */
+}
+
+#copy-button:hover {
+    background-color: #27ae60; /* Darker green on hover */
 }
 
 #output {
@@ -76,6 +96,7 @@ h1 {
 
 h2 {
     font-size: 24px;
+    margin-bottom: 10px;
 }
 
 ul {
@@ -89,21 +110,21 @@ li {
 }
 
 #loading-message {
-    display: none; /* Initially, hide the loading message */
-    font-size: 16px;
+    display: none;
+    font-size: 18px;
     font-weight: bold;
     color: #333;
 }
 
 #loading-icon {
-    display: none; /* Initially, hide the loading icon */
+    display: none;
     width: 30px;
     height: 30px;
     border: 4px solid #f3f3f3;
     border-top: 4px solid #3498db;
     border-radius: 50%;
     animation: spin 2s linear infinite;
-    margin: 0 auto; /* Center the loading icon horizontally */
+    margin: 0 auto;
 }
 
 @keyframes spin {
