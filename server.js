@@ -61,12 +61,6 @@ async function generateKeywords(input) {
   }
 }
 
-
-
-
-
-
-
 // Endpoint for generating T-shirt keywords
 app.get('/generateKeywords', async (req, res) => {
   try {
